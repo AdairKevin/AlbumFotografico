@@ -47,3 +47,38 @@ btnEnviar.addEventListener("click", async () => {
 
 // Iniciar la cámara al cargar la página
 iniciarCamara();
+
+const albumContainer = document.querySelector("#album");
+
+// Función para obtener y mostrar las fotos
+async function obtenerFotos() {
+  try {
+    const response = await fetch(apiUrl);
+    if (!response.ok)
+      throw new Error(`Error en la petición: ${response.statusText}`);
+
+    const fotos = await response.json();
+    mostrarFotos(fotos);
+  } catch (error) {
+    console.error("Error al obtener las fotos:", error);
+  }
+}
+
+// Función para mostrar las fotos en el álbum
+function mostrarFotos(fotos) {
+  albumContainer.innerHTML = ""; // Limpiar antes de agregar nuevas fotos
+
+  fotos.forEach((foto) => {
+    if (foto.image && foto.image.secure_url) {
+      const imgElement = document.createElement("img");
+      imgElement.src = foto.image.secure_url;
+      imgElement.alt = "Foto subida";
+      imgElement.classList.add("foto");
+
+      albumContainer.appendChild(imgElement);
+    }
+  });
+}
+
+// Cargar fotos al cargar la página
+document.addEventListener("DOMContentLoaded", obtenerFotos);
