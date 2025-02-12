@@ -9,6 +9,12 @@ async function iniciarCamara() {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ video: true });
     video.srcObject = stream;
+
+    video.addEventListener("loadedmetadata", () => {
+      // Ajustar el canvas al tamaño del video
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+    });
   } catch (error) {
     console.error("Error al acceder a la cámara:", error);
   }
