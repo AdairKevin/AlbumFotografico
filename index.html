@@ -3,14 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+    <link rel="stylesheet" href="style.css" />
     <title>Document</title>
   </head>
   <body>
-    <video id="video" autoplay></video>
-    <button id="capturar">Capturar Foto</button>
-    <canvas id="canvas" width="640" height="480"></canvas>
-    <button id="enviar">Enviar Foto</button>
+    <div class="camara">
+      <video id="video" autoplay></video>
+      <button id="capturar"></button>
+    </div>
+
+    <div class="capturada">
+      <canvas id="canvas" width="640" height="480"></canvas>
+      <button id="enviar">Enviar Foto</button>
+    </div>
 
     <div class="album" id="album"></div>
 

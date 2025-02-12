@@ -14,6 +14,9 @@ async function iniciarCamara() {
   }
 }
 
+// Iniciar la cámara al cargar la página
+iniciarCamara();
+
 // Capturar foto y dibujar en el canvas
 btnCapturar.addEventListener("click", () => {
   const ctx = canvas.getContext("2d");
@@ -43,9 +46,6 @@ btnEnviar.addEventListener("click", async () => {
     }
   }, "image/jpeg");
 });
-
-// Iniciar la cámara al cargar la página
-iniciarCamara();
 
 const albumContainer = document.querySelector("#album");
 
