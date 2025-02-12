@@ -2,8 +2,7 @@ const video = document.querySelector("#video");
 const canvas = document.querySelector("#canvas");
 const btnCapturar = document.querySelector("#capturar");
 const btnEnviar = document.querySelector("#enviar");
-const apiUrl =
-  "https://32bb4af9-9ba0-49cd-82fb-d580d9533ba1-00-15tv2cgqsd4e4.worf.replit.dev/fotos";
+const apiUrl = "https://apifotos-production.up.railway.app/fotos";
 
 // Iniciar la cámara
 async function iniciarCamara() {
