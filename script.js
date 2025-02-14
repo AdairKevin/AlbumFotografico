@@ -53,8 +53,6 @@ btnEnviar.addEventListener("click", async () => {
   }, "image/jpeg");
 });
 
-const albumContainer = document.querySelector("#album");
-
 // Función para obtener y mostrar las fotos
 async function obtenerFotos() {
   try {
@@ -69,6 +67,7 @@ async function obtenerFotos() {
   }
 }
 
+const albumContainer = document.querySelector("#album");
 // Función para mostrar las fotos en el álbum
 function mostrarFotos(fotos) {
   albumContainer.innerHTML = ""; // Limpiar antes de agregar nuevas fotos
