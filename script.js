@@ -3,6 +3,7 @@ const canvas = document.querySelector("#canvas");
 const btnCapturar = document.querySelector("#capturar");
 const btnEnviar = document.querySelector("#enviar");
 const apiUrl = "https://apifotos-production.up.railway.app/fotos";
+const camaraDiv = document.querySelector(".camara");
 
 // Iniciar la cámara
 async function iniciarCamara() {
@@ -20,8 +21,12 @@ async function iniciarCamara() {
   }
 }
 
-// Iniciar la cámara al cargar la página
-iniciarCamara();
+const btnAbrirCamara = document.querySelector("#abrir");
+
+btnAbrirCamara.addEventListener("click", () => {
+  camaraDiv.style.display = "block";
+  iniciarCamara();
+});
 
 // Capturar foto y dibujar en el canvas
 btnCapturar.addEventListener("click", () => {
