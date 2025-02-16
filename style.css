@@ -24,7 +24,7 @@ body {
 }
 
 .botonesInicio {
-  width: 60%;
+  width: calc(100%-20px);
   padding: 10px;
   display: flex;
   flex-direction: row;
