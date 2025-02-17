@@ -54,6 +54,7 @@ body {
 }
 
 .camara {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -71,6 +72,27 @@ body {
 #video {
   width: 100%;
   border-radius: 5px;
+}
+
+#cambiarCamara {
+  position: absolute;
+  bottom: 70px; /* Espaciado desde la parte inferior */
+  right: 15px; /* Espaciado desde el lado derecho */
+  width: 30px;
+  height: 30px;
+  padding: 5px;
+  font-size: 5px;
+  border: none;
+  border-radius: 100%;
+  background-color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  img {
+    width: 100%;
+  }
 }
 
 #capturar {
@@ -106,17 +128,6 @@ body {
 #capturar:active {
   transform: scale(0.95);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-#cambiarCamara {
-  margin-top: 10px;
-  padding: 10px;
-  font-size: 16px;
-  border: none;
-  background-color: #007bff;
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
 }
 
 .capturada {
