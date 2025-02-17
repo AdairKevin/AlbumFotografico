@@ -4,37 +4,57 @@ const btnCapturar = document.querySelector("#capturar");
 const btnEnviar = document.querySelector("#enviar");
 const apiUrl = "https://apifotos-production.up.railway.app/fotos";
 const camaraDiv = document.querySelector(".camara");
+const capturadaDiv = document.querySelector(".capturada");
+const btnAbrirCamara = document.querySelector("#abrir");
+const btnSubir = document.querySelector("#subir");
+const btnCambiar = document.querySelector("#cambiarCamara");
 
-// Iniciar la cámara
+let useFrontCamera = false;
+
 async function iniciarCamara() {
+  const constraints = {
+    video: {
+      facingMode: useFrontCamera ? "user" : "environment",
+    },
+  };
+
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
     video.srcObject = stream;
 
     video.addEventListener("loadedmetadata", () => {
-      // Ajustar el canvas al tamaño del video
+      // Ajustar el tamaño del canvas si es necesario
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
     });
+
+    // Ajustar el modo espejo según la cámara
+    video.style.transform = useFrontCamera ? "scaleX(-1)" : "scaleX(1)";
   } catch (error) {
     console.error("Error al acceder a la cámara:", error);
   }
 }
 
-const btnAbrirCamara = document.querySelector("#abrir");
+btnCambiar.addEventListener("click", () => {
+  useFrontCamera = !useFrontCamera;
+  iniciarCamara();
+});
+
+btnSubir.addEventListener("click", () => {
+  capturadaDiv.style.display = "flex";
+});
 
 btnAbrirCamara.addEventListener("click", () => {
   camaraDiv.style.display = "block";
   iniciarCamara();
 });
 
-// Capturar foto y dibujar en el canvas
 btnCapturar.addEventListener("click", () => {
   const ctx = canvas.getContext("2d");
   ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+  capturadaDiv.style.display = "flex";
 });
 
-// Enviar la imagen a la API
 btnEnviar.addEventListener("click", async () => {
   canvas.toBlob(async (blob) => {
     const formData = new FormData();
@@ -52,6 +72,8 @@ btnEnviar.addEventListener("click", async () => {
 
       const data = await response.json();
       console.log("Respuesta de la API:", data);
+
+      obtenerFotos();
     } catch (error) {
       console.error("Error al enviar la foto:", error);
     }
