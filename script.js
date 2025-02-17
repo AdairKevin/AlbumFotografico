@@ -8,6 +8,7 @@ const capturadaDiv = document.querySelector(".capturada");
 const btnAbrirCamara = document.querySelector("#abrir");
 const btnSubir = document.querySelector("#subir");
 const btnCambiar = document.querySelector("#cambiarCamara");
+const inputSubirFoto = document.getElementById("inputSubirFoto");
 
 let useFrontCamera = false;
 let currentStream = null;
@@ -46,7 +47,32 @@ btnCambiar.addEventListener("click", () => {
 });
 
 btnSubir.addEventListener("click", () => {
+  inputSubirFoto.click();
   capturadaDiv.style.display = "flex";
+});
+
+inputSubirFoto.addEventListener("change", (event) => {
+  const file = event.target.files[0];
+  const ctx = canvas.getContext("2d");
+  if (file) {
+    const reader = new FileReader();
+
+    // Cargar la imagen y dibujarla en el canvas
+    reader.onload = function (e) {
+      const img = new Image();
+      img.onload = function () {
+        // Ajustar el tamaño del canvas a la imagen
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        // Dibujar la imagen en el canvas
+        ctx.drawImage(img, 0, 0, img.width, img.height);
+      };
+      img.src = e.target.result;
+    };
+
+    reader.readAsDataURL(file);
+  }
 });
 
 btnAbrirCamara.addEventListener("click", () => {
@@ -79,6 +105,8 @@ btnEnviar.addEventListener("click", async () => {
       console.log("Respuesta de la API:", data);
 
       obtenerFotos();
+
+      alert("Fotografia enviada");
     } catch (error) {
       console.error("Error al enviar la foto:", error);
     }
