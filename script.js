@@ -10,8 +10,12 @@ const btnSubir = document.querySelector("#subir");
 const btnCambiar = document.querySelector("#cambiarCamara");
 
 let useFrontCamera = false;
+let currentStream = null;
 
 async function iniciarCamara() {
+  if (currentStream) {
+    currentStream.getTracks().forEach((track) => track.stop());
+  }
   const constraints = {
     video: {
       facingMode: useFrontCamera ? "user" : "environment",
@@ -20,6 +24,7 @@ async function iniciarCamara() {
 
   try {
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    currentStream = stream;
     video.srcObject = stream;
 
     video.addEventListener("loadedmetadata", () => {
