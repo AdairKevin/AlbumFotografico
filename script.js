@@ -46,7 +46,6 @@ inputCapturarFoto.addEventListener("change", (event) => {
 
 btnSubir.addEventListener("click", () => {
   inputSubirFoto.click();
-  capturadaDiv.style.display = "flex";
 });
 
 inputSubirFoto.addEventListener("change", (event) => {
@@ -65,6 +64,7 @@ inputSubirFoto.addEventListener("change", (event) => {
 
         // Dibujar la imagen en el canvas
         ctx.drawImage(img, 0, 0, img.width, img.height);
+        capturadaDiv.style.display = "flex";
       };
       img.src = e.target.result;
     };
