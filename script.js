@@ -107,13 +107,23 @@ btnEnviar.addEventListener("click", async () => {
       obtenerFotos();
 
       alert("Fotografia enviada");
+
+      capturadaDiv.style.display = "none";
     } catch (error) {
       console.error("Error al enviar la foto:", error);
     }
   }, "image/jpeg");
 });
 
-//Función para obtener y mostrar las fotos
+let startX = 0;
+let currentTranslate = 0;
+let prevTranslate = 0;
+let currentIndex = 0;
+let isDragging = false;
+let totalFotos = 0; // Nueva variable para almacenar el total de fotos
+
+const albumContainer = document.querySelector("#album");
+
 async function obtenerFotos() {
   try {
     const response = await fetch(apiUrl);
@@ -122,13 +132,14 @@ async function obtenerFotos() {
 
     const fotos = await response.json();
     mostrarFotos(fotos);
+    agregarEventosDeslizamiento();
+    totalFotos = fotos.length; // Actualizar el total de fotos
+    iniciarDeslizamientoAutomatico(); // Iniciar el slider automático
   } catch (error) {
     console.error("Error al obtener las fotos:", error);
   }
 }
 
-const albumContainer = document.querySelector("#album");
-// Función para mostrar las fotos en el álbum
 function mostrarFotos(fotos) {
   albumContainer.innerHTML = ""; // Limpiar antes de agregar nuevas fotos
 
@@ -138,11 +149,73 @@ function mostrarFotos(fotos) {
       imgElement.src = foto.image.secure_url;
       imgElement.alt = "Foto subida";
       imgElement.classList.add("foto");
-
       albumContainer.appendChild(imgElement);
     }
   });
 }
 
-// Cargar fotos al cargar la página
+function agregarEventosDeslizamiento() {
+  const slider = document.querySelector("#album-slider");
+
+  slider.addEventListener("touchstart", iniciarDeslizamiento);
+  slider.addEventListener("touchmove", moverDeslizamiento);
+  slider.addEventListener("touchend", finalizarDeslizamiento);
+}
+
+function iniciarDeslizamiento(e) {
+  isDragging = true;
+  startX = e.touches[0].clientX;
+  albumContainer.style.transition = "none"; // Desactivar la animación durante el arrastre
+}
+
+function moverDeslizamiento(e) {
+  if (!isDragging) return;
+
+  const currentX = e.touches[0].clientX;
+  const desplazamiento = currentX - startX;
+  currentTranslate = prevTranslate + desplazamiento;
+
+  albumContainer.style.transform = `translateX(${currentTranslate}px)`;
+}
+
+function finalizarDeslizamiento() {
+  isDragging = false;
+  const anchoSlider = document.querySelector("#album-slider").offsetWidth;
+  const umbralDeslizamiento = anchoSlider * 0.25;
+
+  if (
+    currentTranslate - prevTranslate < -umbralDeslizamiento &&
+    currentIndex < totalFotos - 1
+  ) {
+    currentIndex++; // Deslizar a la derecha
+  } else if (
+    currentTranslate - prevTranslate > umbralDeslizamiento &&
+    currentIndex > 0
+  ) {
+    currentIndex--; // Deslizar a la izquierda
+  }
+
+  actualizarPosicion();
+}
+
+function actualizarPosicion() {
+  const anchoSlider = document.querySelector("#album-slider").offsetWidth;
+  currentTranslate = -currentIndex * anchoSlider;
+  prevTranslate = currentTranslate;
+  albumContainer.style.transition = "transform 0.3s ease-in-out";
+  albumContainer.style.transform = `translateX(${currentTranslate}px)`;
+}
+
+// Nueva función para deslizamiento automático
+function iniciarDeslizamientoAutomatico() {
+  setInterval(() => {
+    if (currentIndex < totalFotos - 1) {
+      currentIndex++;
+    } else {
+      currentIndex = 0; // Reiniciar al principio cuando llegue al final
+    }
+    actualizarPosicion();
+  }, 3000);
+}
+
 document.addEventListener("DOMContentLoaded", obtenerFotos);
