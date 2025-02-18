@@ -3,11 +3,8 @@ const canvas = document.querySelector("#canvas");
 const btnCapturar = document.querySelector("#capturar");
 const btnEnviar = document.querySelector("#enviar");
 const apiUrl = "https://apifotos-production.up.railway.app/fotos";
-const camaraDiv = document.querySelector(".camara");
 const capturadaDiv = document.querySelector(".capturada");
-const btnAbrirCamara = document.querySelector("#abrir");
 const btnSubir = document.querySelector("#subir");
-const btnCambiar = document.querySelector("#cambiarCamara");
 const inputSubirFoto = document.getElementById("inputSubirFoto");
 
 let useFrontCamera = false;
@@ -47,41 +44,6 @@ inputCapturarFoto.addEventListener("change", (event) => {
   }
 });
 
-async function iniciarCamara() {
-  if (currentStream) {
-    currentStream.getTracks().forEach((track) => track.stop());
-  }
-  const constraints = {
-    video: {
-      facingMode: useFrontCamera ? "user" : "environment",
-      width: { ideal: 1080 }, // Intentar obtener una resolución de 1920x1080
-      height: { ideal: 1920 },
-    },
-  };
-
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia(constraints);
-    currentStream = stream;
-    video.srcObject = stream;
-
-    video.addEventListener("loadedmetadata", () => {
-      // Ajustar el tamaño del canvas si es necesario
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-    });
-
-    // Ajustar el modo espejo según la cámara
-    video.style.transform = useFrontCamera ? "scaleX(-1)" : "scaleX(1)";
-  } catch (error) {
-    console.error("Error al acceder a la cámara:", error);
-  }
-}
-
-btnCambiar.addEventListener("click", () => {
-  useFrontCamera = !useFrontCamera;
-  iniciarCamara();
-});
-
 btnSubir.addEventListener("click", () => {
   inputSubirFoto.click();
   capturadaDiv.style.display = "flex";
@@ -109,17 +71,6 @@ inputSubirFoto.addEventListener("change", (event) => {
 
     reader.readAsDataURL(file);
   }
-});
-
-btnAbrirCamara.addEventListener("click", () => {
-  camaraDiv.style.display = "block";
-  iniciarCamara();
-});
-
-btnCapturar.addEventListener("click", () => {
-  const ctx = canvas.getContext("2d");
-  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-  capturadaDiv.style.display = "flex";
 });
 
 btnEnviar.addEventListener("click", async () => {
