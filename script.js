@@ -113,7 +113,7 @@ btnEnviar.addEventListener("click", async () => {
   }, "image/jpeg");
 });
 
-// Función para obtener y mostrar las fotos
+//Función para obtener y mostrar las fotos
 async function obtenerFotos() {
   try {
     const response = await fetch(apiUrl);
