@@ -13,6 +13,40 @@ const inputSubirFoto = document.getElementById("inputSubirFoto");
 let useFrontCamera = false;
 let currentStream = null;
 
+const btnCapturarFoto = document.getElementById("capturarFotoBtn");
+const inputCapturarFoto = document.getElementById("capturarFoto");
+
+btnCapturarFoto.addEventListener("click", () => {
+  // Simular un clic en el input de archivo para abrir la cámara
+  inputCapturarFoto.click();
+});
+
+// Manejar la selección de la foto
+inputCapturarFoto.addEventListener("change", (event) => {
+  const file = event.target.files[0]; // Obtener el archivo seleccionado
+  const ctx = canvas.getContext("2d");
+  if (file) {
+    const reader = new FileReader();
+
+    // Cargar la imagen y dibujarla en el canvas
+    reader.onload = function (e) {
+      const img = new Image();
+      img.onload = function () {
+        // Ajustar el tamaño del canvas a la imagen
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        // Dibujar la imagen en el canvas
+        ctx.drawImage(img, 0, 0, img.width, img.height);
+        capturadaDiv.style.display = "flex"; // Mostrar la foto capturada
+      };
+      img.src = e.target.result;
+    };
+
+    reader.readAsDataURL(file);
+  }
+});
+
 async function iniciarCamara() {
   if (currentStream) {
     currentStream.getTracks().forEach((track) => track.stop());
@@ -20,6 +54,8 @@ async function iniciarCamara() {
   const constraints = {
     video: {
       facingMode: useFrontCamera ? "user" : "environment",
+      width: { ideal: 1080 }, // Intentar obtener una resolución de 1920x1080
+      height: { ideal: 1920 },
     },
   };
 

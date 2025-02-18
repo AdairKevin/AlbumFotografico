@@ -33,6 +33,18 @@
         <img src="assets/cambiar-de-camara.png" alt="" />
       </button>
       <button id="capturar"></button>
+
+      <!-- Nuevo botón que abre la cámara nativa -->
+      <button id="capturarFotoBtn">Abrir Cámara</button>
+
+      <!-- Input oculto para capturar la foto -->
+      <input
+        type="file"
+        id="capturarFoto"
+        accept="image/*"
+        capture="environment"
+        style="display: none"
+      />
     </div>
 
     <div class="capturada">
