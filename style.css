@@ -229,3 +229,27 @@ canvas {
   padding: 10px;
   font-size: 20px;
 }
+
+.download {
+  padding: 10px;
+  display: flex;
+}
+
+#download {
+  margin: 15px auto;
+  padding: 15px 20px;
+  border-radius: 5px;
+  border: none;
+  background-color: #63be7e;
+  color: #ffffff;
+  font-size: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+}
+
+#download:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}

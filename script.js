@@ -218,4 +218,42 @@ function iniciarDeslizamientoAutomatico() {
   }, 3000);
 }
 
+const btnDownload = document.querySelector("#download");
+
+btnDownload.addEventListener("click", () => {
+  descargarAlbum();
+});
+
+async function descargarAlbum() {
+  try {
+    // Crear una instancia de JSZip
+    const zip = new JSZip();
+
+    // Obtener todas las imágenes visibles en albumContainer
+    const fotos = albumContainer.querySelectorAll("img");
+
+    for (let [index, img] of fotos.entries()) {
+      const imageResponse = await fetch(img.src); // Descargar la imagen
+      const imageBlob = await imageResponse.blob(); // Convertir la imagen a blob
+      const arrayBuffer = await imageBlob.arrayBuffer(); // Convertir el blob a ArrayBuffer
+
+      // Agregar cada imagen al archivo ZIP con un nombre único
+      zip.file(`foto-${index + 1}.jpg`, arrayBuffer);
+    }
+
+    // Generar el archivo ZIP
+    const zipContent = await zip.generateAsync({ type: "blob" });
+
+    // Crear un enlace para la descarga del ZIP
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(zipContent);
+    link.download = "album-comprimido.zip";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch (error) {
+    console.error("Error al descargar el álbum:", error);
+  }
+}
+
 document.addEventListener("DOMContentLoaded", obtenerFotos);
