@@ -130,10 +130,9 @@ async function obtenerFotos() {
 function mostrarFotos(fotos) {
   albumContainer.innerHTML = ""; // Limpiar antes de agregar nuevas fotos
 
-  const fotosMostradas = fotos.slice(-30);
-
-  fotosMostradas.forEach((foto) => {
+  fotos.forEach((foto) => {
     if (foto.image && foto.image.secure_url) {
+      console.log("Fotos recibidas:", fotos);
       const imgElement = document.createElement("img");
 
       const urlMiniatura = foto.image.secure_url.replace(
