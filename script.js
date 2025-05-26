@@ -130,10 +130,19 @@ async function obtenerFotos() {
 function mostrarFotos(fotos) {
   albumContainer.innerHTML = ""; // Limpiar antes de agregar nuevas fotos
 
-  fotos.forEach((foto) => {
+  const fotosMostradas = fotos.slice(-30);
+
+  fotosMostradas.forEach((foto) => {
     if (foto.image && foto.image.secure_url) {
       const imgElement = document.createElement("img");
-      imgElement.src = foto.image.secure_url;
+
+      const urlMiniatura = foto.image.secure_url.replace(
+        "/upload/",
+        "/upload/w_300,h_300,c_fill,f_auto,q_auto/"
+      );
+
+      imgElement.src = urlMiniatura;
+      imgElement.loading = "lazy";
       imgElement.alt = "Foto subida";
       imgElement.classList.add("foto");
       albumContainer.appendChild(imgElement);
