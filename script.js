@@ -130,21 +130,17 @@ async function obtenerFotos() {
 function mostrarFotos(fotos) {
   albumContainer.innerHTML = ""; // Limpiar antes de agregar nuevas fotos
 
-  fotos.forEach((foto) => {
-    if (foto.image && foto.image.secure_url) {
-      console.log("Fotos recibidas:", fotos);
+  fotos.forEach((foto, i) => {
+    if (foto.secure_url) {
       const imgElement = document.createElement("img");
 
-      const urlMiniatura = foto.image.secure_url.replace(
-        "/upload/",
-        "/upload/w_300,h_300,c_fill,f_auto,q_auto/"
-      );
-
-      imgElement.src = urlMiniatura;
+      imgElement.src = foto.secure_url;
       imgElement.loading = "lazy";
-      imgElement.alt = "Foto subida";
+      imgElement.alt = foto.name || "Foto subida";
       imgElement.classList.add("foto");
       albumContainer.appendChild(imgElement);
+    } else {
+      console.warn(`La foto en índice ${i} no tiene 'secure_url'`, foto);
     }
   });
 }
